@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32</title>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/7.15.0/firebase-database.js"></script>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+      
+        td, th {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+      
+        tr:nth-child(even) {
+            background-color: #dddddd;
+        }
+    </style>
+    <script>
+        // Initialize Firebase
+      var firebaseConfig = {
+        apiKey: "AIzaSyB81ugo_1hV83XNo89pOrdQ8l0v9cRDpUM",
+        databaseURL: "https://esp32-firebase-d84f6-default-rtdb.firebaseio.com/",
+        projectId: "esp32-firebase-d84f6",
+      };
+      firebase.initializeApp(firebaseConfig);
+
+      // Get a reference to the database
+      var database = firebase.database();
+
+      // Display the data initially
+      displayData();
+
+      // Refresh the data every 5 seconds
+      setInterval(function() {
+        displayData();
+      }, 5000);
+
+      function displayData() {
+        // Get the data from the Firebase Realtime Database
+        database.ref("sensor_data/").once("value", function(snapshot) {
+          var data = snapshot.val();
+          var humidityObj = data.Humidity;
+          var temperatureObj = data.Temperature;
+
+          // Get the object keys to extract the humidity and temperature values
+          var humidityObjKeys = Object.keys(humidityObj);
+          var temperatureObjKeys = Object.keys(temperatureObj);
+
+          // Get all the humidity and temperature values
+          var allHumidity = humidityObjKeys.map(function(key) {
+            return humidityObj[key];
+          });
+          var allTemperature = temperatureObjKeys.map(function(key) {
+            return temperatureObj[key];
+          });
+
+          // Display the data in an HTML table
+          var table = "<table><tr><th>Humidity</th><th>Temperature</th></tr>";
+          for (var i = 0; i < allHumidity.length; i++) {
+            table += "<tr><td>" + allHumidity[i] + "</td><td>" + allTemperature[i] + "</td></tr>";
+          }
+          table += "</table>";
+          document.getElementById("data_table").innerHTML = table;
+        });
+      }
+    </script>
+</head>
+<body>
+    <h2>Real-time data display (Humidity & Temperature)</h2>
+    <div id="data_table"></div>
+</body>
+</html>
