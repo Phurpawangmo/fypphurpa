@@ -50,11 +50,13 @@
       function displayData() {
         database.ref("sensor_data/").once("value", function(snapshot) {
           var data = snapshot.val();
-          var alldataObj = data.alldata;
-          var alldataObjKeys = Object.keys(alldataObj);
-          var allDataIn = alldataKeys.map(function(key) {
-            return alldataObj[key];
-          });
+            console.log(data);
+//           var alldataObj = data.alldata;
+//           var alldataObjKeys = Object.keys(alldataObj);
+//           var allDataIn = alldataKeys.map(function(key) {
+//             return alldataObj[key];
+//           });
+            
         })
         console.log("alldata ", allDataIn);
 }
