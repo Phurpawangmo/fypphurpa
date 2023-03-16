@@ -51,11 +51,11 @@
         database.ref("sensor_data/").once("value", function(snapshot) {
           var data = snapshot.val();
             console.log(data);
-//           var alldataObj = data.alldata;
-//           var alldataObjKeys = Object.keys(alldataObj);
-//           var allDataIn = alldataKeys.map(function(key) {
-//             return alldataObj[key];
-//           });
+          var alldataObj = data.alldata;
+          var alldataObjKeys = Object.keys(alldataObj);
+          var allDataIn = alldataObjKeys.map(function(key) {
+            return alldataObj[key];
+          });
             
         })
         console.log("alldata ", allDataIn);
