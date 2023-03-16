@@ -52,29 +52,30 @@
         // Get the data from the Firebase Realtime Database
         database.ref("sensor_data/").once("value", function(snapshot) {
           var data = snapshot.val();
-          var humidityObj = data.Humidity;
-          var temperatureObj = data.Temperature;
+          var alldataObj = data.alldata;
+//           var temperatureObj = data.Temperature;
 
           // Get the object keys to extract the humidity and temperature values
-          var humidityObjKeys = Object.keys(humidityObj);
-          var temperatureObjKeys = Object.keys(temperatureObj);
+          var alldataObjKeys = Object.keys(alldataObj);
+//           var temperatureObjKeys = Object.keys(temperatureObj);
 
           // Get all the humidity and temperature values
-          var allHumidity = humidityObjKeys.map(function(key) {
-            return humidityObj[key];
+          var allDataIn = alldataKeys.map(function(key) {
+            return alldataObj[key];
           });
-          var allTemperature = temperatureObjKeys.map(function(key) {
-            return temperatureObj[key];
-          });
+//           var allTemperature = temperatureObjKeys.map(function(key) {
+//             return temperatureObj[key];
+//           });
 
           // Display the data in an HTML table
-          var table = "<table><tr><th>Gender</th><th>Humidity</th><th>Temperature</th><th>Heart Rate</th><th>Chloestrol</th><th>Smoke</th><th>Alcohol</th><th>Glucose</th><th>Cardio</th><th>Active</th></tr>";
-          for (var i = 0; i < allHumidity.length; i++) {
-           table += "<tr><td>M</td> <td>" + allHumidity[i] + "</td><td>" + allTemperature[i] + "</td></tr>";
-          }
-          table += "</table>";
-          document.getElementById("data_table").innerHTML = table;
-        });
+            console.log("alldata ", allDataIn);
+//           var table = "<table><tr><th>Gender</th><th>Humidity</th><th>Temperature</th><th>Heart Rate</th><th>Chloestrol</th><th>Smoke</th><th>Alcohol</th><th>Glucose</th><th>Cardio</th><th>Active</th></tr>";
+//           for (var i = 0; i < allHumidity.length; i++) {
+//            table += "<tr><td>M</td> <td>" + allHumidity[i] + "</td><td>" + allTemperature[i] + "</td></tr>";
+//           }
+//           table += "</table>";
+//           document.getElementById("data_table").innerHTML = table;
+//         });
       }
     </script>
 </head>
