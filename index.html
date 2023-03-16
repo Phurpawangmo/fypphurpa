@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -14,59 +15,138 @@
             border-collapse: collapse;
             width: 100%;
         }
-      
-        td, th {
+
+        td,
+        th {
             border: 1px solid #dddddd;
             text-align: left;
             padding: 8px;
         }
-      
+
         tr:nth-child(even) {
             background-color: #dddddd;
         }
     </style>
 
     <script>
-      // Initialize Firebase
-      var firebaseConfig = {
-        apiKey: "AIzaSyB81ugo_1hV83XNo89pOrdQ8l0v9cRDpUM",
-        databaseURL: "https://esp32-firebase-d84f6-default-rtdb.firebaseio.com/",
-        projectId: "esp32-firebase-d84f6",
-      };
-      firebase.initializeApp(firebaseConfig);
+        // Initialize Firebase
+        var firebaseConfig = {
+            apiKey: "AIzaSyB81ugo_1hV83XNo89pOrdQ8l0v9cRDpUM",
+            databaseURL: "https://esp32-firebase-d84f6-default-rtdb.firebaseio.com/",
+            projectId: "esp32-firebase-d84f6",
+        };
+        firebase.initializeApp(firebaseConfig);
 
-      // Get a reference to the database
-      var database = firebase.database();
-      // console.log(database)
+        // Get a reference to the database
+        var database = firebase.database();
+        // console.log(database)
 
-      // Display the data initially
-      displayData();
-
-      // Refresh the data every 5 seconds
-      setInterval(function() {
+        // Display the data initially
         displayData();
-      }, 5000);
 
-      function displayData() {
-        database.ref("sensor_data/").once("value", function(snapshot) {
-          var data = snapshot.val();
-            console.log(data);
-          var alldataObj = data.alldata;
-          var alldataObjKeys = Object.keys(alldataObj);
-          var allDataIn = alldataObjKeys.map(function(key) {
-            return alldataObj[key];
-          });
-            
-        console.log("alldata ", allDataIn);
-            console.log('first data: ', allDataIn[0]); 
-            console.log('2nd data: ', allDataIn[1]);            
+        // Refresh the data every 5 seconds
+        // setInterval(function () {
+        // displayData();
+        // }, 5000);
 
-        })
-}
+        function displayData() {
+            database.ref("sensor_data/").on("value", function (snapshot) {
+                var data = snapshot.val();
+                console.log(data);
+                var alldataObj = data.alldata;
+                var alldataObjKeys = Object.keys(alldataObj);
+                var allDataIn = alldataObjKeys.map(function (key) {
+                    return alldataObj[key];
+                });
+
+                console.log("alldata ", allDataIn);
+                console.log('first data: ', allDataIn[0]);
+                console.log('2nd data: ', allDataIn[1]);
+
+                // cleanInput(allDataIn);
+                deleteTable();
+                let i = 0;
+                while (i < allDataIn.length) {
+                    cleanInput(allDataIn[i])
+                    i++
+                }
+            })
+        }
+
+        function deleteTable() {
+            var table = document.getElementById('my_lovely_table');
+
+            while (table.rows.length > 0) {
+                table.deleteRow(0);
+            }
+
+            // Create a new row for the headers
+            const headerRow = table.insertRow(0);
+
+            // Create three header cells and add them to the header row
+            const headerCell1 = headerRow.insertCell(0);
+            headerCell1.textContent = 'shhhhhhhhhhhhhhhhh';
+            headerCell1.style.fontWeight = 'bold';
+
+            const headerCell2 = headerRow.insertCell(1);
+            headerCell2.textContent = 'Dari In Pokto';
+            headerCell2.style.fontWeight = 'bold';
+
+            const headerCell3 = headerRow.insertCell(2);
+            headerCell3.textContent = 'Human Resource';
+            headerCell3.style.fontWeight = 'bold';
+
+
+        }
+
+        function cleanInput(inputString) {
+            // let inputString = '126/89/90\r'
+            console.log(typeof (inputString))
+            console.log(inputString)
+
+            inputString = String(inputString)
+
+            inputString = inputString.replace('/', ' ')
+            inputString = inputString.replace('/', ' ')
+            inputString = inputString.replace('\r', '')
+
+            // console.log('inputString: ', inputString)
+
+            splitNumbers = inputString.split(' ')
+            console.log(splitNumbers)
+
+            renderData(splitNumbers)
+
+        }
+
+        function renderData(inputArray) {
+            var tableRef = document.getElementById('my_lovely_table');
+
+            // while (tableRef.rows.length > 0) {
+            //     tableRef.deleteRow(0);
+            // }
+
+            var newRow = tableRef.insertRow(-1);
+
+            var sysCell = newRow.insertCell(0);
+            var diaCell = newRow.insertCell(1);
+            var hrCell = newRow.insertCell(2);
+
+            sysCell.innerHTML = inputArray[0];
+            diaCell.innerHTML = inputArray[1];
+            hrCell.innerHTML = inputArray[2];
+        }
+
     </script>
 </head>
+
 <body>
-    <h2>Real-time data display (Humidity & Temperature)</h2>
-    <div id="data_table"></div>
+    <h2>My Lovely Bloody Table</h2>
+    <div id="data_table">
+        <table id="my_lovely_table">
+
+        </table>
+    </div>
 </body>
+
 </html>
